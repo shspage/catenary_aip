@@ -214,14 +214,6 @@ static AIErr snapCursor(const AIRealPoint &src, AIRealPoint &dst, AIEvent* event
     return sAICursorSnap->Track(view, src, event, control, &dst);
 }
 
-// insert a segment (with no handle) after index segNumber
-static ASErr insertSegment(AIArtHandle art, ai::int16 segNumber, const AIRealPoint &p) {
-    AIPathSegment seg;
-    seg.p = seg.in = seg.out = p;
-    AIPathSegment segs[1] = { seg };
-    return sAIPath->InsertPathSegments(art, segNumber, 1, segs);
-}
-
 // set a segment (with no handle) at index segNumber
 static ASErr setSegment(AIArtHandle art, ai::int16 segNumber, const AIRealPoint &p) {
     AIPathSegment seg;
@@ -451,7 +443,8 @@ ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
                 }
                 error = sAIPathStyle->SetPathStyle(art, &style); CHKERR;
                 
-                error = insertSegment(art, 0, cpoint); CHKERR;
+                error = sAIPath->SetPathSegmentCount(art, 1); CHKERR;
+                error = setSegment(art, 0, cpoint); CHKERR;
                 m_length = 0;
                 m_downpoint = cpoint;
                 m_path = art;
@@ -495,7 +488,8 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
             
             if(segCount == 1){
                 m_length = lengthBetweenEnds;
-                error = insertSegment(m_path, 1, lastPoint); CHKERR;
+                error = sAIPath->SetPathSegmentCount(m_path, 2); CHKERR;
+                error = setSegment(m_path, 1, lastPoint); CHKERR;
             }
             else if(m_length <= lengthBetweenEnds || lengthBetweenEnds == 0){
                 m_length = lengthBetweenEnds;

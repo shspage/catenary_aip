@@ -1,46 +1,43 @@
-# Mac OS X cruft
-*.pbxuser
-*.mode1v3
-*.mode2v3
-*.user
-project.xcworkspace
+# Adobe Illustrator SDK / Xcode
+
+# Template ----
+ReadMe.txt
+# not yet 
+#*.vcxproj
+#*.vcxproj.filters
+#Resources/Win/
+
+# IllustratorSDK ----
+plugin.pipl
+*.aip
+*.zxp
+
+# Xcode ----
+*.build/
+XCBuildData/
 xcuserdata/
-*.xccheckout
+
+# windows ----
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+*.lnk
+
+# mac ----
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# Windows cruft
-*.suo
-*.ncb
-*.sdf
-*.VC.opendb
-*.VC.db
-*.opensdf
-Debug/
-Release/
-Debug_ANGLE/
-Release_ANGLE/
-ipch/
+# just for me ----
+_release/
+_backup/
+*.zip
+*.ai
+*.xcf
+*コピー*
+*.bak
+*.py
 
-# doxygen generated files
-docs/html
-docs/xml
-docs/doxygen/cinder.tag
-docs/*/node_modules
-*.pyc
-
-
-*.exe
-*.exp
-*.ilk
-*.lib
-*.pdb
-
-FreeImage.dll
-Zlib.dll
-assimp.dll
-fmodex.dll
-fmodexL.dll
-freetype.dll
-glut32.dll
-libeay32.dll
-ssleay32.dll

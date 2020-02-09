@@ -21,6 +21,7 @@ __catenary.aip__ は Adobe Illustrator 2020 用のプラグインツールです
 
 ## インストール
 
+（ビルド後）
 __catenary.aip__ をIllustratorのプラグインフォルダまたは追加プラグインフォルダに入れ、その後Illustratorを（再）実行してください。ツール一覧の一番下にある「アドオン」カテゴリにcatenaryがあると思います。
 
 ## 開発環境

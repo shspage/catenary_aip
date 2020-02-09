@@ -27,6 +27,7 @@ The length of the path is preserved while it is bending, or unless the original 
 
 ## Install
 
+(After build,)
 Place __catenary.aip__ under Illustrator's plug-in folder or additional plug-in folder. Then (re)start Illustrator to find catenary tool at the bottom category of the tools list. 
 
 

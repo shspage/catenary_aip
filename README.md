@@ -8,6 +8,10 @@ Forked from [@Ushio](https://github.com/Ushio) 's repository of an interactive t
 
 ## How To Use
 
+![video-thumb](https://pbs.twimg.com/ext_tw_video_thumb/1226479325970460672/pu/img/vtfPc3LqW1PbP5CH?format=jpg&name=small)  
+video - 
+https://twitter.com/shspage/status/1226479347084615682
+
 * Drag to draw a catenary curve.
 * Press SHIFT key while mouse down at the ends of a curve to EDIT it. (If the "curve" has certain conditions. Described later.)
 * Press OPTION key while mouse down at the ends of a curve to DUPLICATE and edit it.

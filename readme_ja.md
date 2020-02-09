@@ -6,6 +6,10 @@ __catenary.aip__ は Adobe Illustrator 2020 用のプラグインツールです
 
 ## 使い方
 
+![video-thumb](https://pbs.twimg.com/ext_tw_video_thumb/1226479325970460672/pu/img/vtfPc3LqW1PbP5CH?format=jpg&name=small)  
+動画 - 
+https://twitter.com/shspage/status/1226479347084615682
+
 * ドラッグで曲線が描かれます。
 * シフトキーを押しながらパスの端点をクリック、からのドラッグで、パスをカテナリー曲線として操作できます。（パスは一定の条件を持つ必要があります。後述。）
 * シフトでなくオプションを押していると、パスを複製したうえで操作できます。

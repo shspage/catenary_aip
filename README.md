@@ -4,7 +4,7 @@
 
 __catenary.aip__ is a plug-in tool for Adobe Illustrator 2020.
 
-Forked from [@ushiostarfish](https://github.com/Ushio) 's repository of an interactive tool for OpenFrameworks. 
+Forked from [@Ushio](https://github.com/Ushio) 's repository of an interactive tool for OpenFrameworks. 
 
 ## How To Use
 

@@ -14,7 +14,7 @@ Folked from [@ushiostarfish](https://github.com/Ushio) 's repository of an inter
 * Hit UP arrow key while dragging to SHORTEN the curve.
 * Hit DOWN arrow key while dragging to LENGTHEN the curve.
 
-# Note
+## Note
 
 You can edit or duplicate a path that has the following conditions __as__ a catenary curve.
 The length of the path is preserved while it is bending, or unless the original length is unnaturally long as a curve.

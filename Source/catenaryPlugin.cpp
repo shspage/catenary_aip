@@ -66,24 +66,24 @@ const static AICharacterEncoding MY_MESSAGE_ENCODING = kAIUTF8CharacterEncoding;
 // --------
 Plugin* AllocatePlugin(SPPluginRef pluginRef)
 {
-	return new catenaryPlugin(pluginRef);
+    return new catenaryPlugin(pluginRef);
 }
 
 void FixupReload(Plugin* plugin)
 {
-	catenaryPlugin::FixupVTable((catenaryPlugin*) plugin);
+    catenaryPlugin::FixupVTable((catenaryPlugin*) plugin);
 }
 
 catenaryPlugin::catenaryPlugin(SPPluginRef pluginRef) :
-	Plugin(pluginRef),
+    Plugin(pluginRef),
     fToolHandle(NULL),
     fResourceManagerHandle(NULL),
     fShutdownApplicationNotifier(NULL),
-	m_path(nullptr),
-	m_length(0),
-	m_downpoint({0,0})
+    m_path(nullptr),
+    m_length(0),
+    m_downpoint({0,0})
 {
-	strncpy(fPluginName, kcatenaryPluginName, kMaxStringLength);
+    strncpy(fPluginName, kcatenaryPluginName, kMaxStringLength);
 }
 
 catenaryPlugin::~catenaryPlugin()
@@ -92,11 +92,11 @@ catenaryPlugin::~catenaryPlugin()
 
 ASErr catenaryPlugin::StartupPlugin( SPInterfaceMessage *message )
 {
-	ASErr error = kNoErr;
+    ASErr error = kNoErr;
     try{
         error = Plugin::StartupPlugin(message); CHKERR;
         error = AddNotifier(message); CHKERR;
-		error = AddTool(message); CHKERR;
+        error = AddTool(message); CHKERR;
     }
     catch (ai::Error& ex) {
         error = ex;
@@ -106,80 +106,80 @@ ASErr catenaryPlugin::StartupPlugin( SPInterfaceMessage *message )
         error = kCantHappenErr;
     }
 
-	return error;
+    return error;
 }
 
 ASErr catenaryPlugin::PostStartupPlugin(){
     ASErr error = kNoErr;
-	try {
-		error = sAIUser->CreateCursorResourceMgr(fPluginRef, &fResourceManagerHandle); CHKERR;
-	}
-	catch (ai::Error& ex) {
-		error = ex;
-	}
-	catch (...)
-	{
-		error = kCantHappenErr;
-	}
-	return error;
+    try {
+        error = sAIUser->CreateCursorResourceMgr(fPluginRef, &fResourceManagerHandle); CHKERR;
+    }
+    catch (ai::Error& ex) {
+        error = ex;
+    }
+    catch (...)
+    {
+        error = kCantHappenErr;
+    }
+    return error;
 }
 
 ASErr catenaryPlugin::ShutdownPlugin(SPInterfaceMessage *message)
 {
-	ASErr error = kNoErr;
-	error = Plugin::ShutdownPlugin(message);
-	return error;
+    ASErr error = kNoErr;
+    error = Plugin::ShutdownPlugin(message);
+    return error;
 }
 
 ASErr catenaryPlugin::AddNotifier(SPInterfaceMessage *message) {
-	ASErr error = kNoErr;
-	error = sAINotifier->AddNotifier(fPluginRef,
-		"catenary " kAIApplicationShutdownNotifier,
-		kAIApplicationShutdownNotifier,
-		&fShutdownApplicationNotifier);
-	return error;
+    ASErr error = kNoErr;
+    error = sAINotifier->AddNotifier(fPluginRef,
+        "catenary " kAIApplicationShutdownNotifier,
+        kAIApplicationShutdownNotifier,
+        &fShutdownApplicationNotifier);
+    return error;
 }
 
 ASErr catenaryPlugin::Notify(AINotifierMessage* message) {
-	ASErr error = kNoErr;
-	try {
-		if (message->notifier == fShutdownApplicationNotifier)
-		{
-			if (fResourceManagerHandle != NULL)
-			{
-				sAIUser->DisposeCursorResourceMgr(fResourceManagerHandle);
-				fResourceManagerHandle = NULL;
-			}
-		}
-	}
-	catch (ai::Error& ex) {
-		error = ex;
-	}
-	catch (...)
-	{
-		error = kCantHappenErr;
-	}
-	return error;
+    ASErr error = kNoErr;
+    try {
+        if (message->notifier == fShutdownApplicationNotifier)
+        {
+            if (fResourceManagerHandle != NULL)
+            {
+                sAIUser->DisposeCursorResourceMgr(fResourceManagerHandle);
+                fResourceManagerHandle = NULL;
+            }
+        }
+    }
+    catch (ai::Error& ex) {
+        error = ex;
+    }
+    catch (...)
+    {
+        error = kCantHappenErr;
+    }
+    return error;
 }
 
 AIErr catenaryPlugin::AddTool(SPInterfaceMessage* message) {
-	AIErr error = kNoErr;
-	AIAddToolData toolData;
-	toolData.title = ai::UnicodeString::FromRoman("catenary");
-	toolData.tooltip = ai::UnicodeString::FromRoman("catenary");
-	toolData.sameGroupAs = kNoTool;
-	toolData.sameToolsetAs = kNoTool;
-	toolData.normalIconResID = kcatenaryToolIconResourceID;
-	toolData.darkIconResID = kcatenaryToolIconResourceID;
-	toolData.iconType = ai::IconType::kSVG;
+    AIErr error = kNoErr;
+    AIAddToolData toolData;
+    toolData.title = ai::UnicodeString::FromRoman("catenary");
+    toolData.tooltip = ai::UnicodeString::FromRoman("catenary");
+    toolData.sameGroupAs = kNoTool;
+    toolData.sameToolsetAs = kNoTool;
+    toolData.normalIconResID = kcatenaryToolIconResourceID;
+    toolData.darkIconResID = kcatenaryToolIconResourceID;
+    toolData.iconType = ai::IconType::kSVG;
 
-	error = sAITool->GetToolNumberFromName(kcatenaryTool, &toolData.sameGroupAs); CHKERR;
-	error = sAITool->GetToolNumberFromName(kcatenaryTool, &toolData.sameToolsetAs); CHKERR;
+    error = sAITool->GetToolNumberFromName(kcatenaryTool, &toolData.sameGroupAs); CHKERR;
+    error = sAITool->GetToolNumberFromName(kcatenaryTool, &toolData.sameToolsetAs); CHKERR;
 
-	ai::int32 options = kToolWantsToTrackCursorOption;
-	error = sAITool->AddTool(message->d.self, kcatenaryTool, toolData,
-		options, &fToolHandle); CHKERR;
-	return error;
+    ai::int32 options = kToolWantsToTrackCursorOption;
+    error = sAITool->AddTool(message->d.self, kcatenaryTool, toolData,
+        options, &fToolHandle); CHKERR;
+    return error;
 
 }
 
@@ -208,85 +208,85 @@ ASErr catenaryPlugin::EditTool(AIToolMessage *message){
 // event : message->event
 // control : snap setting (see SDK reference for details)
 static AIErr snapCursor(const AIRealPoint &src, AIRealPoint &dst, AIEvent* event, const char* control) {
-	AIErr error = kNoErr;
-	AIDocumentViewHandle view;
-	error = sAIDocumentView->GetNthDocumentView(0, &view); CHKERR;
-	return sAICursorSnap->Track(view, src, event, control, &dst);
+    AIErr error = kNoErr;
+    AIDocumentViewHandle view;
+    error = sAIDocumentView->GetNthDocumentView(0, &view); CHKERR;
+    return sAICursorSnap->Track(view, src, event, control, &dst);
 }
 
 // insert a segment (with no handle) after index segNumber
 static ASErr insertSegment(AIArtHandle art, ai::int16 segNumber, const AIRealPoint &p) {
-	AIPathSegment seg;
-	seg.p = seg.in = seg.out = p;
-	AIPathSegment segs[1] = { seg };
-	return sAIPath->InsertPathSegments(art, segNumber, 1, segs);
+    AIPathSegment seg;
+    seg.p = seg.in = seg.out = p;
+    AIPathSegment segs[1] = { seg };
+    return sAIPath->InsertPathSegments(art, segNumber, 1, segs);
 }
 
 // set a segment (with no handle) at index segNumber
 static ASErr setSegment(AIArtHandle art, ai::int16 segNumber, const AIRealPoint &p) {
-	AIPathSegment seg;
-	seg.p = seg.in = seg.out = p;
-	AIPathSegment segs[1] = { seg };
-	return sAIPath->SetPathSegments(art, segNumber, 1, segs);
+    AIPathSegment seg;
+    seg.p = seg.in = seg.out = p;
+    AIPathSegment segs[1] = { seg };
+    return sAIPath->SetPathSegments(art, segNumber, 1, segs);
 }
 
 // remove art if it is very short in length or is an isolated point
 static ASErr removeTinyPath(AIArtHandle art) {
-	ASErr error = kNoErr;
-	AIReal length;
-	error = sAIPath->GetPathLength(art, &length, 1); CHKERR;
-	if (length < MIN_PATH_LENGTH) {
-		error = sAIArt->DisposeArt(art); CHKERR;
-	}
-	return error;
+    ASErr error = kNoErr;
+    AIReal length;
+    error = sAIPath->GetPathLength(art, &length, 1); CHKERR;
+    if (length < MIN_PATH_LENGTH) {
+        error = sAIArt->DisposeArt(art); CHKERR;
+    }
+    return error;
 }
 
 // 連続した点にフィッティングしたベジェ曲線のセグメントを取得する。
 // points : source points
 // segs : [out] output PathSegments
 static ASErr getSimplifiedSegments(const std::vector<AIRealPoint> &points, std::vector<AIPathSegment> &segs) {
-	ASErr error = kNoErr;
+    ASErr error = kNoErr;
     if(points.size() < 1) return error;
 
-	// 元になる点を準備
-	AICurveFittingTrajectorySampleVector trajectory;
+    // 元になる点を準備
+    AICurveFittingTrajectorySampleVector trajectory;
     trajectory.size = points.size();
-	std::vector<AICurveFittingTrajectorySample> samples;
+    std::vector<AICurveFittingTrajectorySample> samples;
 
-	for (auto itr = points.begin(); itr != points.end(); ++itr) {
-		AICurveFittingTrajectorySample sample;
-		AIRealPoint p = *itr;
-		sample.cut = kAICurveFittingSmoothCut;
-		sample.x = p.h;
-		sample.y = p.v;
-		samples.push_back(sample);
-	}
-	/*samples[0].cut = kAICurveFittingNoCut;
-	samples.back().cut = kAICurveFittingNoCut;*/
+    for (auto itr = points.begin(); itr != points.end(); ++itr) {
+        AICurveFittingTrajectorySample sample;
+        AIRealPoint p = *itr;
+        sample.cut = kAICurveFittingSmoothCut;
+        sample.x = p.h;
+        sample.y = p.v;
+        samples.push_back(sample);
+    }
+    /*samples[0].cut = kAICurveFittingNoCut;
+    samples.back().cut = kAICurveFittingNoCut;*/
     trajectory.first = samples.data();
-	
-	// フィッティング
-	AICurveFittingPathSegmentVector dest;
-	dest.open = true;
-	dest.first = nullptr;
-	try {
-		error = sAICurveFitting->FitTrajectory(&trajectory, 0, 1, 100,
-			CURVEFIT_TOLERANCE, &dest); CHKERR;
+    
+    // フィッティング
+    AICurveFittingPathSegmentVector dest;
+    dest.open = true;
+    dest.first = nullptr;
+    try {
+        error = sAICurveFitting->FitTrajectory(&trajectory, 0, 1, 100,
+            CURVEFIT_TOLERANCE, &dest); CHKERR;
         if(dest.first != nullptr){
             AIPathSegment* seg = dest.first;
             for (ai::int32 i = 0, iEnd = dest.size; i < iEnd; i++) {
                 segs.push_back(*(seg++));
             }
         }
-	}
-	catch (...) {
-		if(dest.first) sSPBasic->FreeBlock(dest.first);
-		throw;
-	}
+    }
+    catch (...) {
+        if(dest.first) sSPBasic->FreeBlock(dest.first);
+        throw;
+    }
     
-	if (dest.first)
-		error = sSPBasic->FreeBlock(dest.first);
-	return error;
+    if (dest.first)
+        error = sSPBasic->FreeBlock(dest.first);
+    return error;
 }
 
 // ----
@@ -295,7 +295,7 @@ static ASErr getSimplifiedSegments(const std::vector<AIRealPoint> &points, std::
 // art, segmentIndex : [out] result
 // is_hit : [out] true if hit
 AIErr catenaryPlugin::checkForPathEndHit(const AIRealPoint cpoint, AIArtHandle &art,
-	ai::int16 &segmentIndex, bool &is_hit)
+    ai::int16 &segmentIndex, bool &is_hit)
 {
     AIErr error = kNoErr;
     is_hit = false;
@@ -324,7 +324,7 @@ AIErr catenaryPlugin::checkForPathEndHit(const AIRealPoint cpoint, AIArtHandle &
 // segIndex : (a result of hit-test)
 // adjustMode : true if adjust-mode, otherwise it duplicates a path
 AIErr catenaryPlugin::setTragetIfCatenary(const AIArtHandle &art, ai::int16 segIndex, bool adjustMode) {
-	ASErr error = kNoErr;
+    ASErr error = kNoErr;
     m_path = nullptr;
     try{
         // 操作対象にするパスの条件
@@ -380,31 +380,31 @@ AIErr catenaryPlugin::setTragetIfCatenary(const AIArtHandle &art, ai::int16 segI
         m_path = nullptr;
         throw;
     }
-	return error;
+    return error;
 }
 
 // カレントレイヤーが編集可能な場合に isAvailable を true に設定する。
 // サブレイヤーの場合、親レイヤーのいずれかが編集不可であれば false になる。
 // isAvailable [out] set true if the current layer is editable
 static ASErr isLayerAvailable(bool *isAvailable) {
-	if (isAvailable == nullptr) return 1;
-	ASErr error = kNoErr;
-	*isAvailable = true;
-	AILayerHandle layer;
-	error = sAILayer->GetCurrentLayer(&layer); CHKERR;
+    if (isAvailable == nullptr) return 1;
+    ASErr error = kNoErr;
+    *isAvailable = true;
+    AILayerHandle layer;
+    error = sAILayer->GetCurrentLayer(&layer); CHKERR;
 
-	AIBoolean isEditable, isVisible;
-	while (layer != NULL && *isAvailable) {
-		error = sAILayer->GetLayerEditable(layer, &isEditable); CHKERR;
-		error = sAILayer->GetLayerVisible(layer, &isVisible); CHKERR;
-		*isAvailable = isEditable && isVisible;
-		if (*isAvailable) {
-			AILayerHandle parentLayer;
-			error = sAILayer->GetLayerParent(layer, &parentLayer); CHKERR;
-			layer = parentLayer;
-		}
-	}
-	return error;
+    AIBoolean isEditable, isVisible;
+    while (layer != NULL && *isAvailable) {
+        error = sAILayer->GetLayerEditable(layer, &isEditable); CHKERR;
+        error = sAILayer->GetLayerVisible(layer, &isVisible); CHKERR;
+        *isAvailable = isEditable && isVisible;
+        if (*isAvailable) {
+            AILayerHandle parentLayer;
+            error = sAILayer->GetLayerParent(layer, &parentLayer); CHKERR;
+            layer = parentLayer;
+        }
+    }
+    return error;
 }
 
 ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
@@ -418,27 +418,27 @@ ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
         
         AIRealPoint cpoint = message->cursor;
         
-		if (optionKeyDown || shiftKeyDown) {
+        if (optionKeyDown || shiftKeyDown) {
             error = snapCursor(message->cursor, cpoint, message->event, SNAPCURSOR_CTL_MOUSEDOWN_HIT); CHKERR;
-			AIArtHandle hitart;
-			ai::int16 segIndex;
-			bool is_hit;
-			error = checkForPathEndHit(cpoint, hitart, segIndex, is_hit);
-			if (is_hit) {
+            AIArtHandle hitart;
+            ai::int16 segIndex;
+            bool is_hit;
+            error = checkForPathEndHit(cpoint, hitart, segIndex, is_hit);
+            if (is_hit) {
                 error = setTragetIfCatenary(hitart, segIndex, shiftKeyDown); CHKERR;
-			}
-		}
+            }
+        }
 
         // 新規パス生成（shiftまたはoptionキーがupか、または編集対象が設定されなかった場合）
-		if(m_path == nullptr){
-			bool isAvailable;
+        if(m_path == nullptr){
+            bool isAvailable;
             error = isLayerAvailable(&isAvailable); CHKERR;
 
             if(isAvailable){
                 error = snapCursor(message->cursor, cpoint, message->event, SNAPCURSOR_CTL_MOUSEDOWN_NEW); CHKERR;
                 // new art
-				AIArtHandle art;
-				error = sAIArt->NewArt(kPathArt, kPlaceDefault, nullptr, &art); CHKERR;
+                AIArtHandle art;
+                error = sAIArt->NewArt(kPathArt, kPlaceDefault, nullptr, &art); CHKERR;
                 
                 AIPathStyle style;
                 AIPathStyleMap styleMap;
@@ -454,9 +454,9 @@ ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
                 error = insertSegment(art, 0, cpoint); CHKERR;
                 m_length = 0;
                 m_downpoint = cpoint;
-				m_path = art;
-			}
-		}
+                m_path = art;
+            }
+        }
     }
     catch (ai::Error& ex) {
         error = ex;
@@ -476,17 +476,17 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
     ASErr error = kNoErr;
     AIPathSegment* segs = nullptr;
     AIPathSegment* exSegs = nullptr;
-	if (m_path) {
-		try{
-			// 上下矢印キーの状態によって線の長さを変化させる。
+    if (m_path) {
+        try{
+            // 上下矢印キーの状態によって線の長さを変化させる。
             // UPで短く、DOWNで長くしているので、
             // 線の下端の位置を変化させるとも言える。
-			double lengthMultiplyer = 1.0;
-			if(mySysUtil::isUpArrowDown()){
-				lengthMultiplyer = LENGTH_MULTIPLYER_UP;
-			} else if(mySysUtil::isDownArrowDown()){
-				lengthMultiplyer = LENGTH_MULTIPLYER_DOWN;
-			}
+            double lengthMultiplyer = 1.0;
+            if(mySysUtil::isUpArrowDown()){
+                lengthMultiplyer = LENGTH_MULTIPLYER_UP;
+            } else if(mySysUtil::isDownArrowDown()){
+                lengthMultiplyer = LENGTH_MULTIPLYER_DOWN;
+            }
         
             ai::int16 segCount;
             error = sAIPath->GetPathSegmentCount(m_path, &segCount); CHKERR;
@@ -502,17 +502,17 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
                 if(segCount > 2){
                     error = sAIPath->SetPathSegmentCount(m_path, 2); CHKERR;
                 }
-				error = setSegment(m_path, 1, lastPoint); CHKERR;
+                error = setSegment(m_path, 1, lastPoint); CHKERR;
             }
             else  // segcount > 1 && m_length > lengthBetweenEnds
             {
-				m_length *= lengthMultiplyer;
+                m_length *= lengthMultiplyer;
 
                 segs = new AIPathSegment[segCount];
                 error = sAIPath->GetPathSegments(m_path, 0, segCount, segs); CHKERR;
                 
-				ai::int16 outSegCount = (ai::int16)lengthBetweenEnds * 2;
-				outSegCount = myAiUtil::fixRange(outSegCount, 2, MAX_SEGMENT_COUNT_BEFORE_SIMPLIFY);
+                ai::int16 outSegCount = (ai::int16)lengthBetweenEnds * 2;
+                outSegCount = myAiUtil::fixRange(outSegCount, 2, MAX_SEGMENT_COUNT_BEFORE_SIMPLIFY);
 
                 // カテナリー曲線上の点をプロットする。
                 AIReal sign = lastPoint.h < m_downpoint.h ? -1 : 1;
@@ -577,16 +577,16 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
                 }
             }
         }
-		catch (ai::Error& ex) {
-			m_path = nullptr;
-			error = ex;
-		}
-		catch (...)
-		{
-			m_path = nullptr;
-			error = kCantHappenErr;
-		}
-	}
+        catch (ai::Error& ex) {
+            m_path = nullptr;
+            error = ex;
+        }
+        catch (...)
+        {
+            m_path = nullptr;
+            error = kCantHappenErr;
+        }
+    }
     delete[] segs;
     delete[] exSegs;
     return error;
@@ -602,9 +602,9 @@ ASErr catenaryPlugin::ToolMouseUp(AIToolMessage * message){
         if(m_path){
             AIRealPoint lastPoint;
             error = snapCursor(message->cursor, lastPoint, message->event, SNAPCURSOR_CTL_MOUSEUP); CHKERR;
-			error = drawCatenary(lastPoint); CHKERR;
+            error = drawCatenary(lastPoint); CHKERR;
 
-			error = removeTinyPath(m_path); CHKERR;
+            error = removeTinyPath(m_path); CHKERR;
         }
     }
     catch(ai::Error& ex) {

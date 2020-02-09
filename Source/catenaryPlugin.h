@@ -11,13 +11,13 @@ void FixupReload(Plugin* plugin);
 class catenaryPlugin : public Plugin
 {
 public:
-	catenaryPlugin(SPPluginRef pluginRef);
-	virtual ~catenaryPlugin();
+    catenaryPlugin(SPPluginRef pluginRef);
+    virtual ~catenaryPlugin();
   
-	FIXUP_VTABLE_EX(catenaryPlugin, Plugin);
+    FIXUP_VTABLE_EX(catenaryPlugin, Plugin);
   
-	ASErr StartupPlugin( SPInterfaceMessage * message );
-	ASErr ShutdownPlugin( SPInterfaceMessage * message );
+    ASErr StartupPlugin( SPInterfaceMessage * message );
+    ASErr ShutdownPlugin( SPInterfaceMessage * message );
     ASErr PostStartupPlugin();
     ASErr Notify(AINotifierMessage* message);
     ASErr ToolMouseDown( AIToolMessage* message );
@@ -38,7 +38,7 @@ private:
     AIErr AddTool(SPInterfaceMessage* message);
 
     AIErr checkForPathEndHit(const AIRealPoint cpoint, AIArtHandle &art, ai::int16 &segmentIndex, bool &is_hit);
-	AIErr setTragetIfCatenary(const AIArtHandle &art, ai::int16 segIndex, bool adjustMode);
+    AIErr setTragetIfCatenary(const AIArtHandle &art, ai::int16 segIndex, bool adjustMode);
     ASErr drawCatenary(AIRealPoint lastPoint);
 };
 

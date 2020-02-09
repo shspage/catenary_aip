@@ -2,7 +2,7 @@
 
 __catenary.aip__ は Adobe Illustrator 2020 用のプラグインツールです。
 
-[@ushiostarfish](https://github.com/Ushio) さんのOpenFrameworks用ツールのリポジトリからfolkしました。
+[@ushiostarfish](https://github.com/Ushio) さんのOpenFrameworks用ツールのリポジトリからforkしました。
 
 ## 使い方
 

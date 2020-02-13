@@ -467,8 +467,6 @@ ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
 // lastPoint : the last point of curve (ex. message->cursor)
 ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
     ASErr error = kNoErr;
-    AIPathSegment* segs = nullptr;
-    AIPathSegment* exSegs = nullptr;
     if (m_path) {
         try{
             // 上下矢印キーの状態によって線の長さを変化させる。
@@ -502,9 +500,6 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
             {
                 m_length *= lengthMultiplyer;
 
-                segs = new AIPathSegment[segCount];
-                error = sAIPath->GetPathSegments(m_path, 0, segCount, segs); CHKERR;
-                
                 ai::int16 outSegCount = (ai::int16)lengthBetweenEnds * 2;
                 outSegCount = myAiUtil::fixRange(outSegCount, 2, MAX_SEGMENT_COUNT_BEFORE_SIMPLIFY);
 
@@ -551,23 +546,18 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
                 
                 // セグメントを設定する。
                 if(simpSegs.size() > 0){
-                    outSegCount = simpSegs.size();
-                    exSegs = new AIPathSegment[outSegCount];
-                    for (ai::int16 i = 0; i < outSegCount; i++) {
-                        AIPathSegment& seg = simpSegs.at(i);
-                        
+                    for (auto itr = simpSegs.begin(); itr != simpSegs.end(); ++itr) {
+                        AIPathSegment& seg = *itr;
                         seg.in.h  = (seg.in.h - firstPoint.h) / xratio + firstPoint.h;
                         seg.p.h   = (seg.p.h - firstPoint.h)  / xratio + firstPoint.h;
                         seg.out.h = (seg.out.h - firstPoint.h) / xratio + firstPoint.h;
-                        
-                        exSegs[i] = seg;
                     }
                     
-                    if (outSegCount != segCount) {
-                        error = sAIPath->SetPathSegmentCount(m_path, outSegCount); CHKERR;
+                    if (simpSegs.size() != segCount) {
+                        error = sAIPath->SetPathSegmentCount(m_path, simpSegs.size()); CHKERR;
                     }
                     
-                    error = sAIPath->SetPathSegments(m_path, 0, outSegCount, exSegs); CHKERR;
+                    error = sAIPath->SetPathSegments(m_path, 0, simpSegs.size(), simpSegs.data()); CHKERR;
                 }
             }
         }
@@ -581,8 +571,6 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
             error = kCantHappenErr;
         }
     }
-    delete[] segs;
-    delete[] exSegs;
     return error;
 }
 

@@ -218,8 +218,7 @@ static AIErr snapCursor(const AIRealPoint &src, AIRealPoint &dst, AIEvent* event
 static ASErr setSegment(AIArtHandle art, ai::int16 segNumber, const AIRealPoint &p) {
     AIPathSegment seg;
     seg.p = seg.in = seg.out = p;
-    AIPathSegment segs[1] = { seg };
-    return sAIPath->SetPathSegments(art, segNumber, 1, segs);
+    return sAIPath->SetPathSegments(art, segNumber, 1, &seg);
 }
 
 // remove art if it is very short in length or is an isolated point
@@ -337,11 +336,11 @@ AIErr catenaryPlugin::setTragetIfCatenary(const AIArtHandle &art, ai::int16 segI
         if (segcount > 1 && !style.fillPaint && style.strokePaint) {
             AIRealRect bounds;
             error = sAIArt->GetArtTransformBounds(art, NULL, kNoStrokeBounds, &bounds); CHKERR;
-            AIPathSegment segs[1];
-            error = sAIPath->GetPathSegments(art, 0, 1, segs); CHKERR;
-            AIRealPoint p1 = segs[0].p;
-            error = sAIPath->GetPathSegments(art, segcount - 1, 1, segs); CHKERR;
-            AIRealPoint p2 = segs[0].p;
+            AIPathSegment seg;
+            error = sAIPath->GetPathSegments(art, 0, 1, &seg); CHKERR;
+            AIRealPoint p1 = seg.p;
+            error = sAIPath->GetPathSegments(art, segcount - 1, 1, &seg); CHKERR;
+            AIRealPoint p2 = seg.p;
 
             if (std::fmax(p1.v, p2.v) < bounds.top + 1.0
                 && std::fmin(p1.h, p2.h) > bounds.left - 1.0
@@ -443,8 +442,9 @@ ASErr catenaryPlugin::ToolMouseDown( AIToolMessage* message ){
                 }
                 error = sAIPathStyle->SetPathStyle(art, &style); CHKERR;
                 
-                error = sAIPath->SetPathSegmentCount(art, 1); CHKERR;
+                error = sAIPath->SetPathSegmentCount(art, 2); CHKERR;
                 error = setSegment(art, 0, cpoint); CHKERR;
+                error = setSegment(art, 1, cpoint); CHKERR;
                 m_length = 0;
                 m_downpoint = cpoint;
                 m_path = art;
@@ -484,19 +484,14 @@ ASErr catenaryPlugin::drawCatenary(AIRealPoint lastPoint){
             
             AIReal lengthBetweenEnds = myAiUtil::dist(m_downpoint, lastPoint);
             
-            if(segCount == 1){
-                m_length = lengthBetweenEnds;
-                error = sAIPath->SetPathSegmentCount(m_path, 2); CHKERR;
-                error = setSegment(m_path, 1, lastPoint); CHKERR;
-            }
-            else if(m_length <= lengthBetweenEnds || lengthBetweenEnds == 0){
+            if(m_length <= lengthBetweenEnds || lengthBetweenEnds == 0){
                 m_length = lengthBetweenEnds;
                 if(segCount > 2){
                     error = sAIPath->SetPathSegmentCount(m_path, 2); CHKERR;
                 }
                 error = setSegment(m_path, 1, lastPoint); CHKERR;
             }
-            else  // segcount > 1 && m_length > lengthBetweenEnds
+            else
             {
                 m_length *= lengthMultiplyer;
 

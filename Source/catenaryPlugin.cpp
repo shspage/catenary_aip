@@ -245,8 +245,8 @@ static ASErr getSimplifiedSegments(const std::vector<AIRealPoint> &points, std::
     std::vector<AICurveFittingTrajectorySample> samples;
 
     for (auto itr = points.begin(); itr != points.end(); ++itr) {
+        const AIRealPoint& p = *itr;
         AICurveFittingTrajectorySample sample;
-        AIRealPoint p = *itr;
         sample.cut = kAICurveFittingSmoothCut;
         sample.x = p.h;
         sample.y = p.v;

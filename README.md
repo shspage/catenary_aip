@@ -2,7 +2,7 @@
 
 [readme in japanese](https://github.com/shspage/catenary_aip/blob/master/readme_ja.md)
 
-__catenary.aip__ is a plug-in tool for Adobe Illustrator 2020.
+__catenary.aip__ is a plug-in tool for Adobe Illustrator 2020-2021.
 
 Forked from [@Ushio](https://github.com/Ushio) 's repository of an interactive tool for OpenFrameworks. 
 
@@ -37,10 +37,10 @@ Place __catenary.aip__ under Illustrator's plug-in folder or additional plug-in 
 
 ## Development Environment
 
-Adobe Illustrator 2020 SDK  
-Xcode 10.1 / macOS 10.13 sdk / MacOS High Sierra
+Adobe Illustrator 2021 SDK  
+Xcode 12.2 / macOS 11.0 sdk / macOS Big Sur
 
-Visual Studio 2017 / Windows10
+<!-- Visual Studio 2017 / Windows10 -->
 
 ## Note For Build
 

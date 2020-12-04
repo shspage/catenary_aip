@@ -1,6 +1,6 @@
 # catenary.aip
 
-__catenary.aip__ は Adobe Illustrator 2020 用のプラグインツールです。
+__catenary.aip__ は Adobe Illustrator 2020-2021 用のプラグインツールです。
 
 [@Ushio](https://github.com/Ushio) さんのOpenFrameworks用ツールのリポジトリからforkしました。
 
@@ -30,10 +30,10 @@ __catenary.aip__ をIllustratorのプラグインフォルダまたは追加プ�
 
 ## 開発環境
 
-Adobe Illustrator 2020 SDK  
-Xcode 10.1 / macOS 10.13 sdk / MacOS High Sierra
+Adobe Illustrator 2021 SDK  
+Xcode 12.2 / macOS 11.0 sdk / macOS Big Sur
 
-Visual Studio 2017 / Windows10
+<!-- Visual Studio 2017 / Windows10 -->
 
 ## 補足（ビルド）
 <!-- ソースコードは https://github.com/shspage/catenary_aip にあります。ビルドする際は以下をご一読ください。-->

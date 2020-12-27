@@ -413,7 +413,7 @@
 				COPYRIGHT_STRING = "Copyright 2020 Hiroyuki Sato. All rights reserved.";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				SDKROOT = macosx10.13;
+				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
 				VERSION_STRING = 1.0.2.0;
 			};
@@ -426,7 +426,7 @@
 				COPYRIGHT_STRING = "Copyright 2020 Hiroyuki Sato. All rights reserved.";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				SDKROOT = macosx10.13;
+				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
 				VERSION_STRING = 1.0.2.0;
 			};

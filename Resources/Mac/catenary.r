@@ -37,6 +37,4 @@
  */
 
 
-#include "catenaryID.h"
-
 #include <Carbon/Carbon.r>
